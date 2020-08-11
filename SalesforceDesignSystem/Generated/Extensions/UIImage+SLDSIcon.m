@@ -143,24 +143,23 @@ static NSMutableDictionary *iconCache = nil;
 +(UIImage*)sldsIcon:(NSInteger)iconType withColor:(UIColor*)iconColor andBGColor:(UIColor*)bgColor andSize:(CGFloat)size{
 
     if (!iconColor) {
-        iconColor = [UIColor whiteColor];
+        iconColor = [UIColor colorWithRed: 255 green: 255 blue: 255 alpha: 1];
+    }
+    if(!bgColor){
+        bgColor = [UIColor colorWithRed: 0 green: 0 blue: 0 alpha: 0];
     }
     if (!bgColor) {
         @synchronized(colorCache){
             bgColor = [self colorForIndex:iconType];
         }
     }
-    if(!bgColor){
-        bgColor = [UIColor clearColor];
-    }
-
     static NSMutableDictionary *iconCache = nil;
     if (iconCache == nil) {
         iconCache = [[NSMutableDictionary alloc] init];
     }
 
     CGFloat const *fgComps = CGColorGetComponents(iconColor.CGColor);
-    CGFloat const * bgComps = CGColorGetComponents(bgColor.CGColor);
+    CGFloat const *bgComps = CGColorGetComponents(bgColor.CGColor);
     NSString *iconKey = [NSString stringWithFormat:@"%ld%f%f%f%f%f%f%f%f%f", (long)iconType,
         fgComps[0], fgComps[1], fgComps[2], fgComps[3],
         bgComps[0], bgComps[1], bgComps[2], bgComps[3], size];
